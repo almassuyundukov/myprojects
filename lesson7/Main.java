@@ -6,7 +6,7 @@ public class Main {
         System.out.println(count);
         boolean passwordAccuracy = DZ7.checkPassword("Alma2uol");
         System.out.println(passwordAccuracy);
-        boolean emailValidity = DZ7.emailValidity("asdqw@.s");
+        boolean emailValidity = DZ7.emailValidity("asdqwwq@.s");
         System.out.println(emailValidity);
     }
 }
