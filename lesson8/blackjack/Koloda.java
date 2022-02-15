@@ -1,7 +1,7 @@
 package lesson8.blackjack;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Koloda {
     private static ArrayList<Card> cards = new ArrayList<>();
@@ -73,10 +73,8 @@ public class Koloda {
         cards.add(new Card("Туз черви", 11));
     }
 
-    public static Card getRandomElement()
-    {
-        Random rand = new Random();
-        int index = rand.nextInt(cards.size());
-        return cards.get(index);
+    public Card getRandomCard(){
+        int randomNum = ThreadLocalRandom.current().nextInt(0, 52);
+        return cards.get(randomNum);
     }
 }
