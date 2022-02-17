@@ -49,6 +49,7 @@ public class Main {
         Matrix matrix5 = new Matrix(num5);
         System.out.println(matrix5.isIdentityMatrix());
         System.out.println(matrix3.isSquareMatrix());
+        System.out.println(matrix1.determinant(matrix1));
 
 
     }

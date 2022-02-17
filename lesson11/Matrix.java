@@ -106,13 +106,13 @@ public class Matrix implements IMatrix {
         }
 
         Matrix matrix = new Matrix(this.getRows(), otherMatrix.getColumns());
-        for(int i = 0; i < this.getRows(); i++){
-            for(int j = 0; j < otherMatrix.getColumns(); j++){
+        for (int i = 0; i < this.getRows(); i++) {
+            for (int j = 0; j < otherMatrix.getColumns(); j++) {
                 double index = 0;
-                for(int n = 0; n < this.getColumns(); n++){
-                    index = index + this.getValueAt(i,n) * otherMatrix.getValueAt(n,j);
+                for (int n = 0; n < this.getColumns(); n++) {
+                    index = index + this.getValueAt(i, n) * otherMatrix.getValueAt(n, j);
                 }
-                matrix.setValueAt(i,j,index);
+                matrix.setValueAt(i, j, index);
             }
         }
         return matrix;
@@ -121,9 +121,9 @@ public class Matrix implements IMatrix {
     @Override
     public IMatrix mul(double value) {
         Matrix matrix = new Matrix(this.getRows(), this.getColumns());
-        for(int i = 0; i < this.getRows(); i++) {
+        for (int i = 0; i < this.getRows(); i++) {
             for (int j = 0; j < this.getColumns(); j++) {
-                matrix.setValueAt(i,j,this.getValueAt(i,j)*value);
+                matrix.setValueAt(i, j, this.getValueAt(i, j) * value);
             }
         }
         return matrix;
@@ -132,9 +132,9 @@ public class Matrix implements IMatrix {
     @Override
     public IMatrix transpose() {
         Matrix matrix = new Matrix(this.getColumns(), this.getRows());
-        for(int i = 0; i < this.getColumns(); i++) {
+        for (int i = 0; i < this.getColumns(); i++) {
             for (int j = 0; j < this.getRows(); j++) {
-                matrix.setValueAt(i,j,this.getValueAt(j,i));
+                matrix.setValueAt(i, j, this.getValueAt(j, i));
             }
         }
         return matrix;
@@ -142,16 +142,50 @@ public class Matrix implements IMatrix {
 
     @Override
     public void fillMatrix(double value) {
-        for(int i = 0; i < this.getRows(); i++) {
+        for (int i = 0; i < this.getRows(); i++) {
             for (int j = 0; j < this.getColumns(); j++) {
-                this.setValueAt(i,j,value);
+                this.setValueAt(i, j, value);
             }
         }
     }
 
     @Override
-    public double determinant() {
-        return 0;
+    public double determinant(IMatrix otherMatrix) {
+        Matrix temporary;
+        double result = 0;
+
+        if (otherMatrix.getRows() != otherMatrix.getColumns()) {
+            System.out.println("Матрица не квадратная!");
+            return -1;
+        }
+        if (otherMatrix.getRows() == 1) {
+            result = otherMatrix.getValueAt(0, 0);
+            return (result);
+        }
+
+        if (otherMatrix.getRows() == 2) {
+            result = ((otherMatrix.getValueAt(0, 0) * otherMatrix.getValueAt(1, 1)) -
+                    (otherMatrix.getValueAt(0, 1) * otherMatrix.getValueAt(1, 0)));
+            return (result);
+        }
+
+        for (int i = 0; i < otherMatrix.getColumns(); i++) {
+            temporary = new Matrix(otherMatrix.getRows() - 1, otherMatrix.getColumns() - 1);
+
+            for (int j = 1; j < otherMatrix.getRows(); j++) {
+                for (int k = 0; k < otherMatrix.getColumns(); k++) {
+                    if (k < i) {
+                        temporary.setValueAt(j - 1, k, otherMatrix.getValueAt(j, k));
+                        ;
+                    } else if (k > i) {
+                        temporary.setValueAt(j - 1, k - 1, otherMatrix.getValueAt(j, k));
+                    }
+                }
+            }
+
+            result += otherMatrix.getValueAt(0, i) * Math.pow(-1, (double) i) * determinant(temporary);
+        }
+        return (result);
     }
 
     @Override
@@ -169,27 +203,27 @@ public class Matrix implements IMatrix {
 
     @Override
     public boolean isIdentityMatrix() {
-        if(this.getRows() != this.getColumns()){
+        if (this.getRows() != this.getColumns()) {
             System.out.println("Матрица не квадратная!");
         }
-        for(int i = 0; i < this.getRows(); i++){
-            for(int j = 0; j <this.getColumns(); j++){
-                if(this.getValueAt(i,j) != 0 && i != j){
+        for (int i = 0; i < this.getRows(); i++) {
+            for (int j = 0; j < this.getColumns(); j++) {
+                if (this.getValueAt(i, j) != 0 && i != j) {
                     System.out.println("Матрица не является единичной");
                     return false;
                 }
-                if(this.getValueAt(i,i) != 1){
+                if (this.getValueAt(i, i) != 1) {
                     System.out.println("Матрица не является единичной");
                     return false;
+                }
             }
-                }
         }
         return true;
     }
 
     @Override
     public boolean isSquareMatrix() {
-        if(this.getRows() != this.getColumns()){
+        if (this.getRows() != this.getColumns()) {
             return false;
         }
         return true;
@@ -197,9 +231,9 @@ public class Matrix implements IMatrix {
 
     @Override
     public void printToConsole() {
-        for(int i = 0; i < this.getRows(); i++){
-            for(int j = 0; j < this.getColumns(); j++){
-                System.out.print(this.getValueAt(i,j) + "  ");
+        for (int i = 0; i < this.getRows(); i++) {
+            for (int j = 0; j < this.getColumns(); j++) {
+                System.out.print(this.getValueAt(i, j) + "  ");
             }
             System.out.println();
         }

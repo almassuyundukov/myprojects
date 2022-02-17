@@ -111,7 +111,7 @@ public interface IMatrix {
 	 * 
 	 * @return детерминант
 	 */
-	double determinant();
+	double determinant(IMatrix otherMatrix);
 	
 	/**
 	 * Проверяет является ли текущая матрица нулевой<br/>
