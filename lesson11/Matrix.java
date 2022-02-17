@@ -150,40 +150,40 @@ public class Matrix implements IMatrix {
     }
 
     @Override
-    public double determinant(IMatrix otherMatrix) {
+    public double determinant() {
         Matrix temporary;
         double result = 0;
 
-        if (otherMatrix.getRows() != otherMatrix.getColumns()) {
+        if (this.getRows() != this.getColumns()) {
             System.out.println("Матрица не квадратная!");
             return -1;
         }
-        if (otherMatrix.getRows() == 1) {
-            result = otherMatrix.getValueAt(0, 0);
+        if (this.getRows() == 1) {
+            result = this.getValueAt(0, 0);
             return (result);
         }
 
-        if (otherMatrix.getRows() == 2) {
-            result = ((otherMatrix.getValueAt(0, 0) * otherMatrix.getValueAt(1, 1)) -
-                    (otherMatrix.getValueAt(0, 1) * otherMatrix.getValueAt(1, 0)));
+        if (this.getRows() == 2) {
+            result = ((this.getValueAt(0, 0) * this.getValueAt(1, 1)) -
+                    (this.getValueAt(0, 1) * this.getValueAt(1, 0)));
             return (result);
         }
 
-        for (int i = 0; i < otherMatrix.getColumns(); i++) {
-            temporary = new Matrix(otherMatrix.getRows() - 1, otherMatrix.getColumns() - 1);
+        for (int i = 0; i < this.getColumns(); i++) {
+            temporary = new Matrix(this.getRows() - 1, this.getColumns() - 1);
 
-            for (int j = 1; j < otherMatrix.getRows(); j++) {
-                for (int k = 0; k < otherMatrix.getColumns(); k++) {
+            for (int j = 1; j < this.getRows(); j++) {
+                for (int k = 0; k < this.getColumns(); k++) {
                     if (k < i) {
-                        temporary.setValueAt(j - 1, k, otherMatrix.getValueAt(j, k));
+                        temporary.setValueAt(j - 1, k, this.getValueAt(j, k));
                         ;
                     } else if (k > i) {
-                        temporary.setValueAt(j - 1, k - 1, otherMatrix.getValueAt(j, k));
+                        temporary.setValueAt(j - 1, k - 1, this.getValueAt(j, k));
                     }
                 }
             }
 
-            result += otherMatrix.getValueAt(0, i) * Math.pow(-1, (double) i) * determinant(temporary);
+            result += this.getValueAt(0, i) * Math.pow(-1, (double) i) * temporary.determinant();
         }
         return (result);
     }
